@@ -1,0 +1,574 @@
+[gd_scene load_steps=34 format=3 uid="uid://dflmmbvo8p5pb"]
+
+[ext_resource type="Shader" path="res://waterworld_cloudSky.gdshader" id="1_jg1hs"]
+[ext_resource type="PackedScene" uid="uid://ctktd655hwrry" path="res://waterworld_water.tscn" id="2_e0bkl"]
+[ext_resource type="PackedScene" uid="uid://tvk0n3fmyk83" path="res://waterworld_rain.tscn" id="3_rhpj1"]
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain.gd" id="4_xnoi8"]
+[ext_resource type="Resource" path="res://terrain/data.hterrain" id="5_dlr3d"]
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain_texture_set.gd" id="5_wg1md"]
+[ext_resource type="Texture2D" uid="uid://sgg3cakl7bvy" path="res://assets/rockImport/testworld_slot0_albedo_bump.png" id="7_licvn"]
+[ext_resource type="Texture2D" uid="uid://gqltn44trb1" path="res://assets/rockImport/testworld_slot0_normal_roughness.png" id="8_ayl12"]
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain_detail_layer.gd" id="9_rjpqw"]
+[ext_resource type="Texture2D" uid="uid://bxcd2hl0vw1po" path="res://assets/t_bush.png" id="10_6cedx"]
+[ext_resource type="Texture2D" uid="uid://6jmdwj3vn6m0" path="res://addons/zylann.hterrain/tools/icons/icon_detail_layer_node.svg" id="11_dnwm6"]
+[ext_resource type="PackedScene" uid="uid://b1ifm0554gtdb" path="res://addons/boujie_water_shader/prefabs/outset_ocean.tscn" id="12_vbqcf"]
+[ext_resource type="PackedScene" uid="uid://ignpdv10rx52" path="res://addons/boujie_water_shader/prefabs/deep_ocean.tscn" id="13_387gn"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_0k8th"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_3inc0"]
+seamless = true
+noise = SubResource("FastNoiseLite_0k8th")
+
+[sub_resource type="Gradient" id="Gradient_i34ox"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_lyhfr"]
+gradient = SubResource("Gradient_i34ox")
+height = 1080
+fill_from = Vector2(0.0042735, 0.482906)
+fill_to = Vector2(0, 0)
+
+[sub_resource type="Gradient" id="Gradient_f7fht"]
+offsets = PackedFloat32Array(0.502304, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_guq7v"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_i2bgq"]
+width = 1080
+height = 1080
+seamless = true
+color_ramp = SubResource("Gradient_f7fht")
+noise = SubResource("FastNoiseLite_guq7v")
+
+[sub_resource type="Gradient" id="Gradient_x6sxx"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_yf7ga"]
+gradient = SubResource("Gradient_x6sxx")
+fill_from = Vector2(0, 0.0854701)
+fill_to = Vector2(0, 1)
+
+[sub_resource type="Gradient" id="Gradient_ftsti"]
+offsets = PackedFloat32Array(0.806452, 0.926267, 0.995392, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.0554119, 0.0554119, 0.0554119, 1, 0.133641, 0.133641, 0.133641, 1, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_cgtop"]
+noise_type = 3
+frequency = 0.8302
+offset = Vector3(10, 0, 0)
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_i1v77"]
+width = 4096
+height = 4096
+seamless = true
+color_ramp = SubResource("Gradient_ftsti")
+noise = SubResource("FastNoiseLite_cgtop")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_klb64"]
+shader = ExtResource("1_jg1hs")
+shader_parameter/color = Color(0.1, 0.5, 1, 1)
+shader_parameter/brightness = 1.5
+shader_parameter/timeOfDay = 0.9
+shader_parameter/clouds = SubResource("NoiseTexture2D_i2bgq")
+shader_parameter/grad = SubResource("GradientTexture2D_yf7ga")
+shader_parameter/stars = SubResource("NoiseTexture2D_i1v77")
+shader_parameter/cloud = SubResource("NoiseTexture2D_3inc0")
+shader_parameter/cloudGrad = SubResource("GradientTexture2D_lyhfr")
+
+[sub_resource type="Sky" id="Sky_q3rsn"]
+sky_material = SubResource("ShaderMaterial_klb64")
+
+[sub_resource type="Environment" id="Environment_8erg3"]
+background_mode = 2
+sky = SubResource("Sky_q3rsn")
+fog_sun_scatter = 0.63
+fog_density = 0.0233
+fog_sky_affect = 0.093
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.01
+volumetric_fog_length = 23.04
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_3p601"]
+emission_shape = 3
+emission_box_extents = Vector3(50, 1, 50)
+direction = Vector3(0, -1, 0)
+spread = 0.0
+gravity = Vector3(0, -50, 0)
+initial_velocity_max = 50.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e207u"]
+albedo_color = Color(0.596078, 0.607843, 0.619608, 1)
+
+[sub_resource type="RibbonTrailMesh" id="RibbonTrailMesh_0yrqg"]
+material = SubResource("StandardMaterial3D_e207u")
+shape = 0
+size = 0.003
+sections = 3
+section_length = 0.1
+
+[sub_resource type="Shader" id="Shader_u35cx"]
+code = "shader_type spatial;
+
+uniform float MAX_RADIUS = 2.0;
+uniform float HASHSCALE1 = 0.1031;
+uniform vec3 HASHSCALE3 = vec3(0.1031, 0.1030, 0.0973);
+uniform sampler2D backgroundTexture;
+
+// This is the reference shader of the plugin, and has the most features.
+// it should be preferred for high-end graphics cards.
+// For less features but lower-end targets, see the lite version.
+
+#include \"res://addons/zylann.hterrain/shaders/include/heightmap.gdshaderinc\"
+uniform sampler2D u_terrain_heightmap;
+uniform sampler2D u_terrain_normalmap;
+// I had to remove `hint_albedo` from colormap in Godot 3 because it makes sRGB conversion kick in,
+// which snowballs to black when doing GPU painting on that texture...
+uniform sampler2D u_terrain_colormap;
+uniform sampler2D u_terrain_splatmap;
+uniform sampler2D u_terrain_globalmap : source_color;
+uniform mat4 u_terrain_inverse_transform;
+uniform mat3 u_terrain_normal_basis;
+
+// the reason bump is preferred with albedo is, roughness looks better with normal maps.
+// If we want no normal mapping, roughness would only give flat mirror surfaces,
+// while bump still allows to do depth-blending for free.
+uniform sampler2D u_ground_albedo_bump_0 : source_color;
+uniform sampler2D u_ground_albedo_bump_1 : source_color;
+uniform sampler2D u_ground_albedo_bump_2 : source_color;
+uniform sampler2D u_ground_albedo_bump_3 : source_color;
+
+uniform sampler2D u_ground_normal_roughness_0;
+uniform sampler2D u_ground_normal_roughness_1;
+uniform sampler2D u_ground_normal_roughness_2;
+uniform sampler2D u_ground_normal_roughness_3;
+
+// Had to give this uniform a suffix, because it's declared as a simple float
+// in other shaders, and its type cannot be inferred by the plugin.
+// See https://github.com/godotengine/godot/issues/24488
+uniform vec4 u_ground_uv_scale_per_texture = vec4(20.0, 20.0, 20.0, 20.0);
+
+uniform bool u_depth_blending = true;
+uniform bool u_triplanar = false;
+// Each component corresponds to a ground texture. Set greater than zero to enable.
+uniform vec4 u_tile_reduction = vec4(0.0, 0.0, 0.0, 0.0);
+
+uniform float u_globalmap_blend_start;
+uniform float u_globalmap_blend_distance;
+
+uniform vec4 u_colormap_opacity_per_texture = vec4(1.0, 1.0, 1.0, 1.0);
+
+varying float v_hole;
+varying vec3 v_tint0;
+varying vec3 v_tint1;
+varying vec3 v_tint2;
+varying vec3 v_tint3;
+varying vec4 v_splat;
+varying vec2 v_ground_uv0;
+varying vec2 v_ground_uv1;
+varying vec2 v_ground_uv2;
+varying vec3 v_ground_uv3;
+varying float v_distance_to_camera;
+
+float hash12(vec2 p)
+{
+	vec3 p3  = fract(vec3(p.xyx) * HASHSCALE1);
+	p3 += dot(p3, p3.yzx + 19.19);
+	return fract((p3.x + p3.y) * p3.z);
+}
+
+vec2 hash22(vec2 p)
+{
+	vec3 p3 = fract(vec3(p.xyx) * HASHSCALE3);
+	p3 += dot(p3, p3.yzx+19.19);
+	return fract((p3.xx+p3.yz)*p3.zy);
+}
+
+vec3 unpack_normal(vec4 rgba) {
+	vec3 n = rgba.xzy * 2.0 - vec3(1.0);
+	// Had to negate Z because it comes from Y in the normal map,
+	// and OpenGL-style normal maps are Y-up.
+	n.z *= -1.0;
+	return n;
+}
+
+vec4 pack_normal(vec3 n, float a) {
+	n.z *= -1.0;
+	return vec4((n.xzy + vec3(1.0)) * 0.5, a);
+}
+
+// Blends weights according to the bump of detail textures,
+// so for example it allows to have sand fill the gaps between pebbles
+vec4 get_depth_blended_weights(vec4 splat, vec4 bumps) {
+	float dh = 0.2;
+
+	vec4 h = bumps + splat;
+
+	// TODO Keep improving multilayer blending, there are still some edge cases...
+	// Mitigation: nullify layers with near-zero splat
+	h *= smoothstep(0, 0.05, splat);
+
+	vec4 d = h + dh;
+	d.r -= max(h.g, max(h.b, h.a));
+	d.g -= max(h.r, max(h.b, h.a));
+	d.b -= max(h.g, max(h.r, h.a));
+	d.a -= max(h.g, max(h.b, h.r));
+
+	return clamp(d, 0, 1);
+}
+
+vec3 get_triplanar_blend(vec3 world_normal) {
+	vec3 blending = abs(world_normal);
+	blending = normalize(max(blending, vec3(0.00001))); // Force weights to sum to 1.0
+	float b = blending.x + blending.y + blending.z;
+	return blending / vec3(b, b, b);
+}
+
+vec4 texture_triplanar(sampler2D tex, vec3 world_pos, vec3 blend) {
+	vec4 xaxis = texture(tex, world_pos.yz);
+	vec4 yaxis = texture(tex, world_pos.xz);
+	vec4 zaxis = texture(tex, world_pos.xy);
+	// blend the results of the 3 planar projections.
+	return xaxis * blend.x + yaxis * blend.y + zaxis * blend.z;
+}
+
+vec4 depth_blend2(vec4 a_value, float a_bump, vec4 b_value, float b_bump, float t) {
+	// https://www.gamasutra.com
+	// /blogs/AndreyMishkinis/20130716/196339/Advanced_Terrain_Texture_Splatting.php
+	float d = 0.1;
+	float ma = max(a_bump + (1.0 - t), b_bump + t) - d;
+	float ba = max(a_bump + (1.0 - t) - ma, 0.0);
+	float bb = max(b_bump + t - ma, 0.0);
+	return (a_value * ba + b_value * bb) / (ba + bb);
+}
+
+vec2 rotate(vec2 v, float cosa, float sina) {
+	return vec2(cosa * v.x - sina * v.y, sina * v.x + cosa * v.y);
+}
+
+vec4 texture_antitile(sampler2D albedo_tex, sampler2D normal_tex, vec2 uv, out vec4 out_normal) {
+	float frequency = 2.0;
+	float scale = 1.3;
+	float sharpness = 0.7;
+	
+	// Rotate and scale UV
+	float rot = 3.14 * 0.6;
+	float cosa = cos(rot);
+	float sina = sin(rot);
+	vec2 uv2 = rotate(uv, cosa, sina) * scale;
+	
+	vec4 col0 = texture(albedo_tex, uv);
+	vec4 col1 = texture(albedo_tex, uv2);
+	vec4 nrm0 = texture(normal_tex, uv);
+	vec4 nrm1 = texture(normal_tex, uv2);
+	//col0 = vec4(0.0, 0.5, 0.5, 1.0); // Highlights variations
+
+	// Normals have to be rotated too since we are rotating the texture...
+	// TODO Probably not the most efficient but understandable for now
+	vec3 n = unpack_normal(nrm1);
+	// Had to negate the Y axis for some reason. I never remember the myriad of conventions around
+	n.xz = rotate(n.xz, cosa, -sina);
+	nrm1 = pack_normal(n, nrm1.a);
+	
+	// Periodically alternate between the two versions using a warped checker pattern
+	float t = 1.2 + 
+		  sin(uv2.x * frequency + sin(uv.x) * 2.0) 
+		* cos(uv2.y * frequency + sin(uv.y) * 2.0); // Result in [0..2]
+	t = smoothstep(sharpness, 2.0 - sharpness, t);
+
+	// Using depth blend because classic alpha blending smoothes out details.
+	out_normal = depth_blend2(nrm0, col0.a, nrm1, col1.a, t);
+	return depth_blend2(col0, col0.a, col1, col1.a, t);
+}
+
+void vertex() {
+	vec4 wpos = MODEL_MATRIX * vec4(VERTEX, 1);
+	vec2 cell_coords = (u_terrain_inverse_transform * wpos).xz;
+	// Must add a half-offset so that we sample the center of pixels,
+	// otherwise bilinear filtering of the textures will give us mixed results (#183)
+	cell_coords += vec2(0.5);
+
+	// Normalized UV
+	UV = cell_coords / vec2(textureSize(u_terrain_heightmap, 0));
+
+	// Height displacement
+	float h = sample_heightmap(u_terrain_heightmap, UV);
+	VERTEX.y = h;
+	wpos.y = h;
+
+	vec3 base_ground_uv = vec3(cell_coords.x, h * MODEL_MATRIX[1][1], cell_coords.y);
+	v_ground_uv0 = base_ground_uv.xz / u_ground_uv_scale_per_texture.x;
+	v_ground_uv1 = base_ground_uv.xz / u_ground_uv_scale_per_texture.y;
+	v_ground_uv2 = base_ground_uv.xz / u_ground_uv_scale_per_texture.z;
+	v_ground_uv3 = base_ground_uv / u_ground_uv_scale_per_texture.w;
+
+	// Putting this in vertex saves 2 fetches from the fragment shader,
+	// which is good for performance at a negligible quality cost,
+	// provided that geometry is a regular grid that decimates with LOD.
+	// (downside is LOD will also decimate tint and splat, but it's not bad overall)
+	vec4 tint = texture(u_terrain_colormap, UV);
+	v_hole = tint.a;
+	v_tint0 = mix(vec3(1.0), tint.rgb, u_colormap_opacity_per_texture.x);
+	v_tint1 = mix(vec3(1.0), tint.rgb, u_colormap_opacity_per_texture.y);
+	v_tint2 = mix(vec3(1.0), tint.rgb, u_colormap_opacity_per_texture.z);
+	v_tint3 = mix(vec3(1.0), tint.rgb, u_colormap_opacity_per_texture.w);
+	v_splat = texture(u_terrain_splatmap, UV);
+
+	// Need to use u_terrain_normal_basis to handle scaling.
+	NORMAL = u_terrain_normal_basis * unpack_normal(texture(u_terrain_normalmap, UV));
+
+	v_distance_to_camera = distance(wpos.xyz, CAMERA_POSITION_WORLD);
+}
+
+void fragment() {
+	if (v_hole < 0.5) {
+		// TODO Add option to use vertex discarding instead, using NaNs
+		discard;
+	}
+
+	vec3 terrain_normal_world = 
+		u_terrain_normal_basis * unpack_normal(texture(u_terrain_normalmap, UV));
+	terrain_normal_world = normalize(terrain_normal_world);
+	vec3 normal = terrain_normal_world;
+
+	float globalmap_factor = clamp((v_distance_to_camera - u_globalmap_blend_start) 
+		* u_globalmap_blend_distance, 0.0, 1.0);
+	globalmap_factor *= globalmap_factor; // slower start, faster transition but far away
+	vec3 global_albedo = texture(u_terrain_globalmap, UV).rgb;
+	ALBEDO = global_albedo;
+
+	// Doing this branch allows to spare a bunch of texture fetches for distant pixels.
+	// Eventually, there could be a split between near and far shaders in the future,
+	// if relevant on high-end GPUs
+	if (globalmap_factor < 1.0) {
+		vec4 ab0, ab1, ab2, ab3;
+		vec4 nr0, nr1, nr2, nr3;
+
+		if (u_triplanar) {
+			// Only do triplanar on one texture slot,
+			// because otherwise it would be very expensive and cost many more ifs.
+			// I chose the last slot because first slot is the default on new splatmaps,
+			// and that's a feature used for cliffs, which are usually designed later.
+
+			vec3 blending = get_triplanar_blend(terrain_normal_world);
+
+			ab3 = texture_triplanar(u_ground_albedo_bump_3, v_ground_uv3, blending);
+			nr3 = texture_triplanar(u_ground_normal_roughness_3, v_ground_uv3, blending);
+
+		} else {
+			if (u_tile_reduction[3] > 0.0) {
+				ab3 = texture_antitile(
+					u_ground_albedo_bump_3, u_ground_normal_roughness_3, v_ground_uv3.xz, nr3);
+			} else {
+				ab3 = texture(u_ground_albedo_bump_3, v_ground_uv3.xz);
+				nr3 = texture(u_ground_normal_roughness_3, v_ground_uv3.xz);
+			}
+		}
+
+		if (u_tile_reduction[0] > 0.0) {
+			ab0 = texture_antitile(
+				u_ground_albedo_bump_0, u_ground_normal_roughness_0, v_ground_uv0, nr0);
+		} else {
+			ab0 = texture(u_ground_albedo_bump_0, v_ground_uv0);
+			nr0 = texture(u_ground_normal_roughness_0, v_ground_uv0);
+		}
+		if (u_tile_reduction[1] > 0.0) {
+			ab1 = texture_antitile(
+				u_ground_albedo_bump_1, u_ground_normal_roughness_1, v_ground_uv1, nr1);
+		} else {
+			ab1 = texture(u_ground_albedo_bump_1, v_ground_uv1);
+			nr1 = texture(u_ground_normal_roughness_1, v_ground_uv1);
+		}
+		if (u_tile_reduction[2] > 0.0) {
+			ab2 = texture_antitile(
+				u_ground_albedo_bump_2, u_ground_normal_roughness_2, v_ground_uv2, nr2);
+		} else {
+			ab2 = texture(u_ground_albedo_bump_2, v_ground_uv2);
+			nr2 = texture(u_ground_normal_roughness_2, v_ground_uv2);
+		}
+
+		vec3 col0 = ab0.rgb * v_tint0;
+		vec3 col1 = ab1.rgb * v_tint1;
+		vec3 col2 = ab2.rgb * v_tint2;
+		vec3 col3 = ab3.rgb * v_tint3;
+
+		vec4 rough = vec4(nr0.a, nr1.a, nr2.a, nr3.a);
+
+		vec3 normal0 = unpack_normal(nr0);
+		vec3 normal1 = unpack_normal(nr1);
+		vec3 normal2 = unpack_normal(nr2);
+		vec3 normal3 = unpack_normal(nr3);
+
+		vec4 w;
+		// TODO An #ifdef macro would be nice! Or copy/paste everything in a different shader...
+		if (u_depth_blending) {
+			w = get_depth_blended_weights(v_splat, vec4(ab0.a, ab1.a, ab2.a, ab3.a));
+		} else {
+			w = v_splat.rgba;
+		}
+
+		float w_sum = (w.r + w.g + w.b + w.a);
+
+		ALBEDO = (
+			w.r * col0.rgb +
+			w.g * col1.rgb +
+			w.b * col2.rgb +
+			w.a * col3.rgb) / w_sum;
+
+		ROUGHNESS = (
+			w.r * rough.r +
+			w.g * rough.g +
+			w.b * rough.b +
+			w.a * rough.a) / w_sum;
+
+		vec3 ground_normal = /*u_terrain_normal_basis **/ (
+			w.r * normal0 +
+			w.g * normal1 +
+			w.b * normal2 +
+			w.a * normal3) / w_sum;
+		// If no splat textures are defined, normal vectors will default to (1,1,1),
+		// which is incorrect, and causes the terrain to be shaded wrongly in some directions.
+		// However, this should not be a problem to fix in the shader,
+		// because there MUST be at least one splat texture set.
+		//ground_normal = normalize(ground_normal);
+		// TODO Make the plugin insert a default normalmap if it's empty
+
+		// Combine terrain normals with detail normals (not sure if correct but looks ok)
+		normal = normalize(vec3(
+			terrain_normal_world.x + ground_normal.x,
+			terrain_normal_world.y,
+			terrain_normal_world.z + ground_normal.z));
+
+		normal = mix(normal, terrain_normal_world, globalmap_factor);
+
+		ALBEDO = mix(ALBEDO, global_albedo, globalmap_factor);
+		ROUGHNESS = mix(ROUGHNESS, 1.0, globalmap_factor);
+
+		// Show splatmap weights
+		//ALBEDO = w.rgb;
+	}
+	// Highlight all pixels undergoing no splatmap at all
+//	else {
+//		ALBEDO = vec3(1.0, 0.0, 0.0);
+//	}
+
+	NORMAL = (VIEW_MATRIX * (vec4(normal, 0.0))).xyz;
+	
+	//new ripples
+	float resolution = 1080.0;
+	vec2 uv = UV*500.0;
+	vec2 p0 = floor(uv);
+
+	vec2 circles = vec2(0.0);
+	for (float j = -MAX_RADIUS; j <= MAX_RADIUS; ++j)
+	{
+		for (float i = -MAX_RADIUS; i <= MAX_RADIUS; ++i)
+		{
+			vec2 pi = p0 + vec2(i, j);
+			
+			vec2 hsh = hash22(pi);
+			
+			vec2 p = pi + hash22(hsh);
+			
+			float t = fract(0.3 * TIME + hash12(hsh));
+			vec2 v = p - uv;
+			float d = length(v) - (float(MAX_RADIUS) + 1.)*t;
+			
+			float h = 1e-3;
+			float d1 = d - h;
+			float d2 = d + h;
+			float p1 = sin(31.*d1) * smoothstep(-0.6, -0.3, d1) * smoothstep(0., -0.3, d1);
+			float p2 = sin(31.*d2) * smoothstep(-0.6, -0.3, d2) * smoothstep(0., -0.3, d2);
+			circles += 0.5 * normalize(v) * ((p2 - p1) / (2. * h) * (1. - t) * (1. - t));
+		}
+	}
+	
+	circles /= float((MAX_RADIUS * 2.0 + 1.0) * (MAX_RADIUS * 2.0 + 1.0));
+	
+	float intensity = mix(0.01, 0.15, smoothstep(0.1, 0.6, abs(fract(0.05 * TIME + 0.5) * 2.0 -1.0)));
+	vec3 n = vec3(circles, sqrt(1.0 - dot(circles, circles)));
+	vec3 Rcolor = texture(backgroundTexture, uv/resolution - intensity * n.xy).rgb + 5.0 * pow(clamp(dot(n, normalize(vec3(1.0, 0.7, 0.5))), 0.0, 1.0), 6.0);
+	ALBEDO *= vec4(Rcolor, 1.0).rgb;
+}
+"
+
+[sub_resource type="Resource" id="Resource_aptc3"]
+script = ExtResource("5_wg1md")
+mode = 0
+textures = [[ExtResource("7_licvn")], [ExtResource("8_ayl12")]]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_8erg3")
+
+[node name="waterworld_water" parent="." instance=ExtResource("2_e0bkl")]
+transform = Transform3D(0.0671271, 0, -0.997744, 0, 1, 0, 0.997744, 0, 0.0671271, 124.722, -5.30321, 131.611)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.177819, 0.984053, -0.00437438, 0.954877, 0.171469, -0.242504, -0.237887, -0.0472989, -0.970141, 353.46, 93.9665, -81.2723)
+visible = false
+
+[node name="waterworld_rain" parent="." instance=ExtResource("3_rhpj1")]
+transform = Transform3D(-0.820521, 0.241884, -0.517917, 0.20891, 0.970273, 0.122179, 0.532074, -0.00794783, -0.84666, 116.722, 23.2274, 36.806)
+amount = 500000
+lifetime = 2.0
+randomness = 1.0
+fixed_fps = 60
+visibility_aabb = AABB(-108.734, -68.6296, -87.9631, 217.468, 137.259, 175.926)
+process_material = SubResource("ParticleProcessMaterial_3p601")
+draw_pass_1 = SubResource("RibbonTrailMesh_0yrqg")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-0.985331, 0, -0.170657, 0, 1, 0, 0.170657, 0, -0.985331, 116.107, 2.21152, 30.6937)
+current = true
+
+[node name="HTerrain" type="Node3D" parent="."]
+script = ExtResource("4_xnoi8")
+_terrain_data = ExtResource("5_dlr3d")
+chunk_size = 32
+collision_enabled = true
+collision_layer = 1
+collision_mask = 1
+shader_type = "Custom"
+custom_shader = SubResource("Shader_u35cx")
+custom_globalmap_shader = null
+texture_set = SubResource("Resource_aptc3")
+render_layers = 1
+cast_shadow = 1
+shader_params/MAX_RADIUS = 0.3
+shader_params/HASHSCALE1 = null
+shader_params/HASHSCALE3 = null
+shader_params/u_ground_uv_scale_per_texture = null
+shader_params/u_depth_blending = true
+shader_params/u_triplanar = null
+shader_params/u_tile_reduction = Vector4(0.5, 0, 0, 0)
+shader_params/u_globalmap_blend_start = null
+shader_params/u_globalmap_blend_distance = null
+shader_params/u_colormap_opacity_per_texture = null
+shader_params/backgroundTexture = null
+
+[node name="HTerrainDetailLayer" type="Node3D" parent="HTerrain"]
+script = ExtResource("9_rjpqw")
+texture = ExtResource("10_6cedx")
+shader_params/u_globalmap_tint_bottom = null
+shader_params/u_globalmap_tint_top = null
+shader_params/u_bottom_ao = null
+shader_params/u_instance_scale = null
+shader_params/u_roughness = null
+metadata/_editor_icon = ExtResource("11_dnwm6")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+visible = false
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="OutsetOcean" parent="." instance=ExtResource("12_vbqcf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 199.549, -5.93381, 4.75339)
+visible = false
+far_edge = 4000
+
+[node name="DeepOcean" parent="." instance=ExtResource("13_387gn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.474, -8.82156, 128.041)
+visible = false
+far_edge = 4000

@@ -1,0 +1,68 @@
+[gd_resource type="QuadMesh" load_steps=11 format=3 uid="uid://df73t37xecxed"]
+
+[ext_resource type="Shader" path="res://naive_water.gdshader" id="1_c7o5t"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_exkmv"]
+noise_type = 3
+frequency = 0.1171
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_8kacv"]
+noise = SubResource("FastNoiseLite_exkmv")
+
+[sub_resource type="Gradient" id="Gradient_87yc1"]
+offsets = PackedFloat32Array(0, 0.863071, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.136929, 0.136929, 0.136929, 1, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_jvxhf"]
+frequency = 0.1671
+fractal_type = 2
+fractal_lacunarity = 0.2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ey8vw"]
+color_ramp = SubResource("Gradient_87yc1")
+noise = SubResource("FastNoiseLite_jvxhf")
+
+[sub_resource type="Gradient" id="Gradient_mbc1t"]
+offsets = PackedFloat32Array(0, 0.925311, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.540541, 0.540541, 0.540541, 1, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_rxklr"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_yea6i"]
+width = 1080
+height = 1080
+color_ramp = SubResource("Gradient_mbc1t")
+noise = SubResource("FastNoiseLite_rxklr")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m2bgl"]
+render_priority = 0
+shader = ExtResource("1_c7o5t")
+shader_parameter/refraction = null
+shader_parameter/refraction_texture_channel = null
+shader_parameter/refraction_opacity = null
+shader_parameter/edge_scale = 0.1
+shader_parameter/near = 0.5
+shader_parameter/far = 100.0
+shader_parameter/edge_color = Color(0.470588, 0.470588, 0.470588, 1)
+shader_parameter/MAX_RADIUS = 0.2
+shader_parameter/HASHSCALE1 = 0.1031
+shader_parameter/HASHSCALE3 = Vector3(0.1031, 0.103, 0.0973)
+shader_parameter/waveSpeed = 0.5
+shader_parameter/waveHeight = 0.5
+shader_parameter/wave = 0.0
+shader_parameter/color = Color(0.113725, 0.133333, 0.376471, 1)
+shader_parameter/fresColor = Color(0.364706, 0.364706, 0.364706, 1)
+shader_parameter/k = -15.22
+shader_parameter/w = -0.350002
+shader_parameter/rough = 0.0199978
+shader_parameter/metal = 0.649998
+shader_parameter/foamy = SubResource("NoiseTexture2D_ey8vw")
+shader_parameter/backgroundTexture = SubResource("NoiseTexture2D_8kacv")
+shader_parameter/waterSeed = SubResource("NoiseTexture2D_yea6i")
+
+[resource]
+material = SubResource("ShaderMaterial_m2bgl")
+size = Vector2(300, 300)
+subdivide_width = 1000
+subdivide_depth = 1000
+orientation = 1

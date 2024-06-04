@@ -1,0 +1,20 @@
+[gd_scene load_steps=5 format=3 uid="uid://s4vjutl6nf1a"]
+
+[ext_resource type="Shader" path="res://2dRipple.gdshader" id="1_njpar"]
+[ext_resource type="Texture2D" uid="uid://slekppa7ldpr" path="res://icon.svg" id="2_8sf8e"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vvct1"]
+render_priority = 0
+shader = ExtResource("1_njpar")
+shader_parameter/MAX_RADIUS = 2.0
+shader_parameter/HASHSCALE1 = 0.1031
+shader_parameter/HASHSCALE3 = Vector3(0.1031, 0.103, 0.0973)
+shader_parameter/backgroundTexture = ExtResource("2_8sf8e")
+
+[sub_resource type="QuadMesh" id="QuadMesh_bpigt"]
+material = SubResource("ShaderMaterial_vvct1")
+size = Vector2(100, 100)
+orientation = 1
+
+[node name="mesh" type="MeshInstance3D"]
+mesh = SubResource("QuadMesh_bpigt")

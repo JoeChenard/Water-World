@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://ctktd655hwrry"]
+
+[ext_resource type="QuadMesh" uid="uid://df73t37xecxed" path="res://realisticWater.tres" id="1_wvnpk"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_eajsv"]
+
+[node name="water" type="MeshInstance3D"]
+transform = Transform3D(0.0671271, 0, -0.997744, 0, 1, 0, 0.997744, 0, 0.0671271, 4.05151, 11.3057, -4.17429)
+mesh = ExtResource("1_wvnpk")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 84.7654, 0)
+visible = false
+amount = 500
+lifetime = 5.0
+trail_enabled = true
+process_material = SubResource("ParticleProcessMaterial_eajsv")

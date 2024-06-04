@@ -1,0 +1,45 @@
+[gd_scene load_steps=7 format=3 uid="uid://rdl167tyovu2"]
+
+[ext_resource type="Texture2D" uid="uid://slekppa7ldpr" path="res://icon.svg" id="1_phshk"]
+[ext_resource type="Shader" path="res://shaders/LED.gdshader" id="2_kksc7"]
+[ext_resource type="Texture2D" uid="uid://bt7lj5v8hgmpq" path="res://assets/streetLights.png" id="3_hk1l1"]
+[ext_resource type="Shader" path="res://shaders/rectLED.gdshader" id="4_0wiua"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_upbbg"]
+shader = ExtResource("2_kksc7")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_eex6w"]
+shader = ExtResource("4_0wiua")
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="Icon" type="Sprite2D" parent="."]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(129, 219)
+scale = Vector2(2.08594, 1.80469)
+texture = ExtResource("1_phshk")
+
+[node name="StreetLights" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_upbbg")
+position = Vector2(147, 245)
+scale = Vector2(1.0969, 1.10324)
+texture = ExtResource("3_hk1l1")
+
+[node name="TextEdit" type="TextEdit" parent="."]
+offset_left = 322.0
+offset_top = 26.0
+offset_right = 1147.0
+offset_bottom = 540.0
+theme_override_colors/font_color = Color(1, 0.0823529, 0, 1)
+theme_override_font_sizes/font_size = 25
+text = "THIS IS 
+WHAT I MEAN"
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_eex6w")
+offset_left = 311.0
+offset_top = 21.0
+offset_right = 1124.0
+offset_bottom = 470.0
